@@ -1,6 +1,8 @@
 package com.example.recipekeeper;
 
-public class Recipe {
+import java.io.Serializable;
+
+public class Recipe implements Serializable {
     private long id;
     private String title;
     private String description;
