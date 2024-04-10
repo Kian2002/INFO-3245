@@ -26,6 +26,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public long insertRecipe(Recipe recipe) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(RecipeContract.RecipeEntry.COLUMN_NAME_TITLE, recipe.getTitle());
+        values.put(RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION, recipe.getDescription());
+
+        // Insert the new row, and return the primary key of the new row
+        long newRowId = db.insert(RecipeContract.RecipeEntry.TABLE_NAME, null, values);
+        db.close();
+
+        return newRowId;
+    }
+
     public void insertDummyData() {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

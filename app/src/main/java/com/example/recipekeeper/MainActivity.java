@@ -9,17 +9,30 @@ import android.widget.GridView;
 import android.widget.Toast;
 import android.database.sqlite.SQLiteDatabase;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
     private GridView recipeGridView;
     private RecipeRepository recipeRepository;
     private List<Recipe> recipes;
     private static DatabaseHelper dbHelper;
     private static SQLiteDatabase db;
+
+    private ActivityResultLauncher<Intent> addRecipeLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Recipe recipe = (Recipe) result.getData().getSerializableExtra("recipe");
+                    // Insert the recipe into the database and handle the result
+                    handleAddRecipeResult(recipe);
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Open activity to add new recipe
-                startActivity(new Intent(MainActivity.this, AddRecipeActivity.class));
+                addRecipeLauncher.launch(new Intent(MainActivity.this, AddRecipeActivity.class));
             }
         });
     }
@@ -71,4 +84,33 @@ public class MainActivity extends AppCompatActivity {
     public static SQLiteDatabase getDatabase() {
         return db;
     }
+
+    private void handleAddRecipeResult(Recipe recipe) {
+        // Insert the recipe into the database
+        long newRowId = dbHelper.insertRecipe(recipe);
+
+        if (newRowId != -1) {
+            Toast.makeText(this, "Recipe saved successfully", Toast.LENGTH_SHORT).show();
+            // Refresh the recipe list or update UI as needed
+        } else {
+            Toast.makeText(this, "Error saving recipe", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void fetchRecipes() {
+        // Retrieve recipes from the database
+        recipes = recipeRepository.getAllRecipes();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Fetch recipes again when the activity is resumed
+        fetchRecipes();
+        // Update the adapter with the new data
+        RecipeAdapter adapter = new RecipeAdapter(this, recipes);
+        recipeGridView.setAdapter(adapter);
+    }
+
+
 }
