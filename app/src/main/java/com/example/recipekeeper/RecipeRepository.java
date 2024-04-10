@@ -11,11 +11,40 @@ import java.util.List;
 
 public class RecipeRepository {
 
-    private SQLiteDatabase database;
+    private static SQLiteDatabase database;
 
     public RecipeRepository(Context context) {
         DatabaseHelper dbHelper = new DatabaseHelper(context);
         database = dbHelper.getWritableDatabase();
+    }
+
+    public Recipe getRecipeById(long id) {
+        String[] projection = {
+                BaseColumns._ID,
+                RecipeContract.RecipeEntry.COLUMN_NAME_TITLE,
+                RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION
+        };
+        String selection = BaseColumns._ID + " = ?";
+        String[] selectionArgs = {String.valueOf(id)};
+        Cursor cursor = database.query(
+                RecipeContract.RecipeEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+        if (cursor != null) {
+            cursor.moveToFirst();
+            String title = cursor.getString(cursor.getColumnIndexOrThrow(RecipeContract.RecipeEntry.COLUMN_NAME_TITLE));
+            String description = cursor.getString(cursor.getColumnIndexOrThrow(RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION));
+            Recipe recipe = new Recipe(title, description);
+            recipe.setId(id);
+            cursor.close();
+            return recipe;
+        }
+        return null;
     }
 
     public long insertRecipe(Recipe recipe) {

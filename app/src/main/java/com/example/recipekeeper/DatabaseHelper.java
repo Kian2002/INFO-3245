@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.content.ContentValues;
+import android.database.Cursor;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -43,6 +44,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
+        // only insert dummy data if the table is empty
+        String count = "SELECT count(*) FROM " + RecipeContract.RecipeEntry.TABLE_NAME;
+        Cursor cursor = db.rawQuery(count, null);
+        cursor.moveToFirst();
+        int rowCount = cursor.getInt(0);
+        cursor.close();
+        if (rowCount > 0) {
+            return;
+        }
+
         // Insert dummy recipes
         values.put(RecipeContract.RecipeEntry.COLUMN_NAME_TITLE, "Pasta Carbonara");
         values.put(RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION, "Delicious pasta with creamy sauce");
@@ -58,6 +69,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteAllRecords() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(RecipeContract.RecipeEntry.TABLE_NAME, null, null);
+        db.close();
+    }
+
+    public void deleteRecipe(Recipe recipe) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = RecipeContract.RecipeEntry.COLUMN_NAME_TITLE + " = ?";
+        String[] selectionArgs = { recipe.getTitle() };
+        db.delete(RecipeContract.RecipeEntry.TABLE_NAME, selection, selectionArgs);
+        db.close();
+    }
+
+    public void updateRecipe(Recipe recipe, String newTitle, String newDescription) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(RecipeContract.RecipeEntry.COLUMN_NAME_TITLE, newTitle);
+        values.put(RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION, newDescription);
+        String selection = RecipeContract.RecipeEntry.COLUMN_NAME_TITLE + " = ?";
+        String[] selectionArgs = { recipe.getTitle() };
+        db.update(RecipeContract.RecipeEntry.TABLE_NAME, values, selection, selectionArgs);
         db.close();
     }
 }
