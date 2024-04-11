@@ -30,6 +30,8 @@
         android:layout_height="wrap_content"
         android:text="Edit Recipe"
         android:layout_below="@id/descriptionTextView"
+        android:textColor="@android:color/white"
+        android:background="@color/customOrange"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>
 
@@ -39,6 +41,8 @@
         android:layout_height="wrap_content"
         android:text="Back"
         android:layout_below="@id/editButton"
+        android:textColor="@android:color/white"
+        android:background="@color/customOrange"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>
 
