@@ -5,14 +5,22 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "recipe_db";
     private static final int DATABASE_VERSION = 1;
+    private Context context;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -55,18 +63,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return;
         }
 
-        // Insert dummy recipes
-        values.put(RecipeContract.RecipeEntry.COLUMN_NAME_TITLE, "Pasta Carbonara");
-        values.put(RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION, "Delicious pasta with creamy sauce");
-        values.put(RecipeContract.RecipeEntry.IMAGE_URL, "https://www.spendwithpennies.com/wp-content/uploads/2023/04/1200-Spaghetti-Carbonara-2-SpendWithPennies.jpg");
-        db.insert(RecipeContract.RecipeEntry.TABLE_NAME, null, values);
-
-        values.clear();
-
-        values.put(RecipeContract.RecipeEntry.COLUMN_NAME_TITLE, "Chicken Curry");
-        values.put(RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION, "Spicy and flavorful chicken curry");
-        values.put(RecipeContract.RecipeEntry.IMAGE_URL, "https://images.immediate.co.uk/production/volatile/sites/30/2022/10/Spicy-chicken-and-chickpea-curry-40f3492.jpg?resize=768,574");
-        db.insert(RecipeContract.RecipeEntry.TABLE_NAME, null, values);
+        // Read data from CSV and insert into the database
+        InputStream inputStream = context.getResources().openRawResource(R.raw.recipes);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        try {
+            String line;
+            boolean headerSkipped = false;
+            while ((line = reader.readLine()) != null) {
+                if (!headerSkipped) {
+                    // Skip the header line
+                    headerSkipped = true;
+                    continue;
+                }
+                String[] valuesArray = line.split(",");
+                if (valuesArray.length >= 2) {
+                    values.put(RecipeContract.RecipeEntry.COLUMN_NAME_TITLE, valuesArray[0]);
+                    values.put(RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION, valuesArray[1]);
+                    if (valuesArray.length >= 3) {
+                        values.put(RecipeContract.RecipeEntry.IMAGE_URL, valuesArray[2]);
+                    }
+                    db.insert(RecipeContract.RecipeEntry.TABLE_NAME, null, values);
+                    values.clear();
+                }
+            }
+        } catch (IOException e) {
+            Log.e("DatabaseHelper", "Error reading CSV file: " + e.getMessage());
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                Log.e("DatabaseHelper", "Error closing InputStream: " + e.getMessage());
+            }
+        }
     }
 
     public void deleteAllRecords() {
