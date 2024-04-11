@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
 
+        dbHelper.onUpgrade(db, 1, 1);
         dbHelper.deleteAllRecords();
         dbHelper.insertDummyData();
 

@@ -32,6 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(RecipeContract.RecipeEntry.COLUMN_NAME_TITLE, recipe.getTitle());
         values.put(RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION, recipe.getDescription());
+        values.put(RecipeContract.RecipeEntry.IMAGE_URL, recipe.getImageUrl());
 
         // Insert the new row, and return the primary key of the new row
         long newRowId = db.insert(RecipeContract.RecipeEntry.TABLE_NAME, null, values);
@@ -57,12 +58,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Insert dummy recipes
         values.put(RecipeContract.RecipeEntry.COLUMN_NAME_TITLE, "Pasta Carbonara");
         values.put(RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION, "Delicious pasta with creamy sauce");
+        values.put(RecipeContract.RecipeEntry.IMAGE_URL, "https://www.spendwithpennies.com/wp-content/uploads/2023/04/1200-Spaghetti-Carbonara-2-SpendWithPennies.jpg");
         db.insert(RecipeContract.RecipeEntry.TABLE_NAME, null, values);
 
         values.clear();
 
         values.put(RecipeContract.RecipeEntry.COLUMN_NAME_TITLE, "Chicken Curry");
         values.put(RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION, "Spicy and flavorful chicken curry");
+        values.put(RecipeContract.RecipeEntry.IMAGE_URL, "https://images.immediate.co.uk/production/volatile/sites/30/2022/10/Spicy-chicken-and-chickpea-curry-40f3492.jpg?resize=768,574");
         db.insert(RecipeContract.RecipeEntry.TABLE_NAME, null, values);
     }
 

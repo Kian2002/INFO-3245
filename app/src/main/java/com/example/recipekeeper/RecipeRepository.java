@@ -22,7 +22,8 @@ public class RecipeRepository {
         String[] projection = {
                 BaseColumns._ID,
                 RecipeContract.RecipeEntry.COLUMN_NAME_TITLE,
-                RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION
+                RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION,
+                RecipeContract.RecipeEntry.IMAGE_URL
         };
         String selection = BaseColumns._ID + " = ?";
         String[] selectionArgs = {String.valueOf(id)};
@@ -39,7 +40,8 @@ public class RecipeRepository {
             cursor.moveToFirst();
             String title = cursor.getString(cursor.getColumnIndexOrThrow(RecipeContract.RecipeEntry.COLUMN_NAME_TITLE));
             String description = cursor.getString(cursor.getColumnIndexOrThrow(RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION));
-            Recipe recipe = new Recipe(title, description);
+            String imageUrl = cursor.getString(cursor.getColumnIndexOrThrow(RecipeContract.RecipeEntry.IMAGE_URL));
+            Recipe recipe = new Recipe(title, description, imageUrl);
             recipe.setId(id);
             cursor.close();
             return recipe;
@@ -51,6 +53,7 @@ public class RecipeRepository {
         ContentValues values = new ContentValues();
         values.put(RecipeContract.RecipeEntry.COLUMN_NAME_TITLE, recipe.getTitle());
         values.put(RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION, recipe.getDescription());
+        values.put(RecipeContract.RecipeEntry.IMAGE_URL, recipe.getImageUrl());
         return database.insert(RecipeContract.RecipeEntry.TABLE_NAME, null, values);
     }
 
@@ -65,7 +68,8 @@ public class RecipeRepository {
         String[] projection = {
                 BaseColumns._ID,
                 RecipeContract.RecipeEntry.COLUMN_NAME_TITLE,
-                RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION
+                RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION,
+                RecipeContract.RecipeEntry.IMAGE_URL
         };
         Cursor cursor = database.query(
                 RecipeContract.RecipeEntry.TABLE_NAME,
@@ -81,7 +85,8 @@ public class RecipeRepository {
                 long id = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
                 String title = cursor.getString(cursor.getColumnIndexOrThrow(RecipeContract.RecipeEntry.COLUMN_NAME_TITLE));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow(RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION));
-                Recipe recipe = new Recipe(title, description);
+                String imageUrl = cursor.getString(cursor.getColumnIndexOrThrow(RecipeContract.RecipeEntry.IMAGE_URL));
+                Recipe recipe = new Recipe(title, description, imageUrl);
                 recipe.setId(id);
                 recipes.add(recipe);
             }

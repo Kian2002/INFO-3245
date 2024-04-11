@@ -33,6 +33,7 @@ public class AddRecipeActivity extends AppCompatActivity {
                 // Validate input
                 String title = titleEditText.getText().toString().trim();
                 String description = descriptionEditText.getText().toString().trim();
+                String imageUrl = "https://via.placeholder.com/150";
 
                 if (TextUtils.isEmpty(title) || TextUtils.isEmpty(description)) {
                     Toast.makeText(AddRecipeActivity.this, "Please enter title and description", Toast.LENGTH_SHORT).show();
@@ -40,7 +41,7 @@ public class AddRecipeActivity extends AppCompatActivity {
                 }
 
                 // Create a new Recipe object
-                Recipe recipe = new Recipe(title, description);
+                Recipe recipe = new Recipe(title, description, imageUrl);
 
                 // Pass the recipe back to the MainActivity
                 Intent intent = new Intent();

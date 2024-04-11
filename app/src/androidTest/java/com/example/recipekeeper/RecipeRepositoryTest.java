@@ -37,7 +37,7 @@ public class RecipeRepositoryTest {
 
     @Test
     public void testInsertRecipe() {
-        Recipe recipe = new Recipe("Pasta Carbonara", "Delicious pasta with creamy sauce");
+        Recipe recipe = new Recipe("Pasta Carbonara", "Delicious pasta with creamy sauce", "");
         long id = repository.insertRecipe(recipe);
         assertNotEquals(-1, id);
     }
@@ -51,7 +51,7 @@ public class RecipeRepositoryTest {
 
     @Test
     public void testDeleteRecipe() {
-        Recipe recipe = new Recipe("Pasta Carbonara", "Delicious pasta with creamy sauce");
+        Recipe recipe = new Recipe("Pasta Carbonara", "Delicious pasta with creamy sauce", "");
         long id = repository.insertRecipe(recipe);
 
         int rowsDeleted = repository.deleteRecipe(id);
