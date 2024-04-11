@@ -94,5 +94,39 @@ public class RecipeRepository {
         }
         return recipes;
     }
+
+    public List<Recipe> searchRecipes(String query) {
+        List<Recipe> recipes = new ArrayList<>();
+        String[] projection = {
+                BaseColumns._ID,
+                RecipeContract.RecipeEntry.COLUMN_NAME_TITLE,
+                RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION,
+                RecipeContract.RecipeEntry.IMAGE_URL
+        };
+        String selection = RecipeContract.RecipeEntry.COLUMN_NAME_TITLE + " LIKE ?";
+        String[] selectionArgs = {"%" + query + "%"};
+        Cursor cursor = database.query(
+                RecipeContract.RecipeEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
+                String title = cursor.getString(cursor.getColumnIndexOrThrow(RecipeContract.RecipeEntry.COLUMN_NAME_TITLE));
+                String description = cursor.getString(cursor.getColumnIndexOrThrow(RecipeContract.RecipeEntry.COLUMN_NAME_DESCRIPTION));
+                String imageUrl = cursor.getString(cursor.getColumnIndexOrThrow(RecipeContract.RecipeEntry.IMAGE_URL));
+                Recipe recipe = new Recipe(title, description, imageUrl);
+                recipe.setId(id);
+                recipes.add(recipe);
+            }
+            cursor.close();
+        }
+        return recipes;
+    }
 }
 
