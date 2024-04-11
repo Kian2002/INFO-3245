@@ -31,6 +31,8 @@ public class RecipeAdapter extends ArrayAdapter<Recipe> {
 
         TextView titleTextView = listItem.findViewById(R.id.titleTextView);
         titleTextView.setText(currentRecipe.getTitle());
+        // white text color
+        titleTextView.setTextColor(context.getResources().getColor(R.color.white));
 
         return listItem;
     }

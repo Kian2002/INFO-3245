@@ -9,33 +9,44 @@
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:layout_alignParentTop="true" />
+        android:background="@drawable/grid_item_corner"
+        android:foregroundTint="@color/white"
+        android:queryHint="Search Recipes"
+        android:outlineAmbientShadowColor="@color/white"
+        android:searchIcon="@drawable/baseline_search_24" />
 
-    <!-- GridView to display recipes -->
+    <!-- GridView to display recipes-->
     <GridView
         android:id="@+id/recipeGridView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:numColumns="2"
-        android:columnWidth="120dp"
-        android:verticalSpacing="16dp"
-        android:horizontalSpacing="16dp"
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="529dp"
+        android:layout_above="@+id/addRecipeButton"
         android:layout_below="@id/searchView"
-        android:layout_above="@id/addRecipeButton"/>
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="26dp"
+        android:background="@drawable/grid_item_corner"
+        android:columnWidth="100dp"
+        android:gravity="center"
+        android:stretchMode="columnWidth"
+        />
+
 
     <!-- Button to add new recipe -->
     <Button
         android:id="@+id/addRecipeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add New Recipe"
-        android:textColor="@android:color/white"
-        android:background="@color/customOrange"
+        android:layout_width="382dp"
+        android:layout_height="65dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="41dp"
+        android:backgroundTint="@color/customOrange"
+        android:text="Add Recipe"
+        android:textColor="@color/white" />
 
 </RelativeLayout>

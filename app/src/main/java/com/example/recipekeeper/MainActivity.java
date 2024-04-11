@@ -1,12 +1,14 @@
 package com.example.recipekeeper;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -101,6 +103,10 @@ public class MainActivity extends AppCompatActivity {
                 addRecipeLauncher.launch(new Intent(MainActivity.this, AddRecipeActivity.class));
             }
         });
+        int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = (TextView) searchView.findViewById(id);
+        textView.setTextColor(Color.WHITE);
+        textView.setHintTextColor(Color.WHITE);
     }
 
     public static SQLiteDatabase getDatabase() {
