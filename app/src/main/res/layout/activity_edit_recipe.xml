@@ -8,6 +8,12 @@
         android:id="@+id/titleEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="16dp"
         android:hint="Title"
         android:inputType="text" />
 
@@ -16,30 +22,58 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/titleEditText"
-        android:layout_marginTop="16dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="16dp"
         android:hint="Description"
         android:inputType="textMultiLine" />
 
-    <Button
-        android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/descriptionEditText"
-        android:textColor="@android:color/white"
-        android:background="@color/customOrange"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="Save" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center|top"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
-    <Button
-        android:id="@+id/deleteButton"
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:text="Delete" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1"
+            android:text="Save" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/editRecipeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/saveButton"
-        android:textColor="@android:color/white"
-        android:background="@color/customOrange"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Delete" />
+        android:layout_marginEnd="16dp"
+        android:text="Edit Recipe"
+        android:textAlignment="center"
+        android:textColor="@color/customOrange"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

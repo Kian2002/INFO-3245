@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Define the button style -->
+    <style name="AppButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/grid_item_corner</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+</resources>
